@@ -1,7 +1,7 @@
 from flask import Flask
 
 DEBUG = True
-PORT = 8000
+PORT = 8000 or os.environ.PORT
 
 app = Flask(__name__)
 
