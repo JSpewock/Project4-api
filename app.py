@@ -4,6 +4,7 @@ import os
 
 import models
 from resources.rants import rants
+from resources.comments import comments
 
 DEBUG = True
 PORT = 8000
@@ -12,6 +13,9 @@ app = Flask(__name__)
 
 CORS(rants, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
 app.register_blueprint(rants, url_prefix='/rantz')
+
+CORS(comments, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
+app.register_blueprint(comments, url_prefix='/comments')
 
 @app.before_request
 def before_request():

@@ -5,6 +5,10 @@ from playhouse.shortcuts import model_to_dict
 
 rants = Blueprint('rantz', 'rant', url_prefix='rantz')
 
+# ------------------------------------
+#               Rants
+# ------------------------------------
+
 #index
 @rants.route('/', methods=["GET"])
 def get_all_rants():
@@ -48,3 +52,7 @@ def delete_rant(id):
   query = models.Rants.delete().where(models.Rants.id == id)
   query.execute()
   return jsonify(data=rant_dict, status={"code": 200, "message": "success, deleted"})
+
+# ---------------------------------------
+#               Comments
+# ---------------------------------------

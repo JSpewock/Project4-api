@@ -28,7 +28,7 @@ class Rants(Model):
     database = DATABASE
 
 class Comments(Model):
-  created_by = ForeignKeyField(Users, backref='user_comment')
+  # created_by = ForeignKeyField(Users, backref='user_comment')
   body = CharField()
   parent_post = ForeignKeyField(Rants, backref='comments')
   created_at = DateTimeField(default=datetime.datetime.now)
