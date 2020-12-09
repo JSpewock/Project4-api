@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, g
+from flask_cors import CORS
 import os
 
 import models
@@ -9,6 +10,7 @@ PORT = 8000
 
 app = Flask(__name__)
 
+CORS(rantz, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
 app.register_blueprint(rantz, url_prefix='/rantz')
 
 @app.before_request
