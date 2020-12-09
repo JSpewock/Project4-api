@@ -32,8 +32,10 @@ def create_rant():
 @rants.route('/<id>', methods=["GET"])
 def get_one_rant(id):
   rant = models.Rants.get_by_id(id)
-  print(rant.__dict__)
-  return jsonify(data=model_to_dict(rant), status={"code": 200, "message": "success"})
+  rant_dict = model_to_dict(rant)
+  comments = [model_to_dict(comment) for comment in rant.comments]
+  post = {"post": rant_dict, "comments": comments}
+  return jsonify(data=post, status={"code": 200, "message": "success"})
 
 #update
 @rants.route('/<id>', methods=["PUT"])
