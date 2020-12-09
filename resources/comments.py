@@ -20,3 +20,12 @@ def update_comment(id):
   query = models.Comments.update(**payload).where(models.Comments.id == id)
   query.execute()
   return jsonify(data=model_to_dict(models.Comments.get_by_id(id)), status={"code": 200, "message": "comment successfully updated"})
+
+#delete
+@comments.route('/<id>', methods=['DELETE'])
+def delete_comment(id):
+  comment = models.Comments.get_by_id(id)
+  comment_dict = model_to_dict(comment)
+  query = models.Comments.delete().where(models.Comments.id == id)
+  query.execute()
+  return jsonify(data=comment_dict, status={"code": 200, "message": "comment deleted"})
