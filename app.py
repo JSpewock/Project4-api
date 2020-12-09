@@ -3,15 +3,15 @@ from flask_cors import CORS
 import os
 
 import models
-from resources.rantz import rantz
+from resources.rants import rants
 
 DEBUG = True
 PORT = 8000
 
 app = Flask(__name__)
 
-CORS(rantz, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
-app.register_blueprint(rantz, url_prefix='/rantz')
+CORS(rants, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
+app.register_blueprint(rants, url_prefix='/rantz')
 
 @app.before_request
 def before_request():
