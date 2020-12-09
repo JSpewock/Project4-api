@@ -52,7 +52,3 @@ def delete_rant(id):
   query = models.Rants.delete().where(models.Rants.id == id)
   query.execute()
   return jsonify(data=rant_dict, status={"code": 200, "message": "success, deleted"})
-
-# ---------------------------------------
-#               Comments
-# ---------------------------------------
