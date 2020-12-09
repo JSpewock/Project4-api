@@ -30,3 +30,21 @@ def get_one_rant(id):
   rant = models.Rants.get_by_id(id)
   print(rant.__dict__)
   return jsonify(data=model_to_dict(rant), status={"code": 200, "message": "success"})
+
+#update
+@rants.route('/<id>', methods=["PUT"])
+def update_rant(id):
+  payload = request.get_json()
+  query = models.Rants.update(**payload).where(models.Rants.id == id)
+  query.execute()
+  return jsonify(data=model_to_dict(models.Rants.get_by_id(id)), status={"code": 200, "message": "success"})
+
+#delete
+@rants.route('/<id>', methods=["DELETE"])
+def delete_rant(id):
+  rant = models.Rants.get_by_id(id)
+  rant_dict = model_to_dict(rant)
+  print(rant_dict)
+  query = models.Rants.delete().where(models.Rants.id == id)
+  query.execute()
+  return jsonify(data=rant_dict, status={"code": 200, "message": "success, deleted"})
