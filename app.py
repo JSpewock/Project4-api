@@ -35,13 +35,13 @@ PORT = 8000
 
 app = Flask(__name__)
 
-CORS(rants, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
+CORS(rants, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(rants, url_prefix='/rantz')
 
-CORS(comments, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
+CORS(comments, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(comments, url_prefix='/comments')
 
-CORS(users, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
+CORS(users, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(users, url_prefix='/users')
 
 @app.before_request
