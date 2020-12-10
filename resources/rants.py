@@ -11,6 +11,7 @@ rants = Blueprint('rantz', 'rant', url_prefix='rantz')
 
 # token_required = login_check
 
+#all information on jwt and creating decorators was taken from https://www.youtube.com/watch?v=WxGBoY5iNXY
 def login_check(f):
   @wraps(f)
   def decorated(*args, **kwargs):
