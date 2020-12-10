@@ -53,7 +53,7 @@ def get_all_rants():
 def create_rant(current_user):
   payload = request.get_json()
   
-  new_rant = models.Rants.create(title=payload['title'], body=payload['body'], created_by_id=current_user['id'])
+  new_rant = models.Rants.create(title=payload['title'], body=payload['body'], created_by=current_user['id'])
   rant_dict = model_to_dict(new_rant)
   #hide the user who created the posts password
   del rant_dict['created_by']['password']
