@@ -19,7 +19,7 @@ CORS(comments, origins=['http://localhost:3000', 'https://project-4-client-rantz
 app.register_blueprint(comments, url_prefix='/comments')
 
 CORS(users, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'])
-app.register_blueprint(users, url_prefix='users')
+app.register_blueprint(users, url_prefix='/users')
 
 @app.before_request
 def before_request():
