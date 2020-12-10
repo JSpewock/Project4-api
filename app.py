@@ -9,6 +9,7 @@ from resources.rants import rants
 from resources.comments import comments
 from resources.users import users
 
+#all information on jwt and creating decorators was taken from https://www.youtube.com/watch?v=WxGBoY5iNXY
 def login_check(f):
   @wraps(f)
   def decorated(*args, **kwargs):
@@ -24,7 +25,7 @@ def login_check(f):
       data = jwt.decode(token, 'THISISASECRETKEY')
       current_user = models.Users.get(models.Users.id == data['id'])
     except:
-      return jsonify(data={}, status={"code": 401, "message": "Token has expired"})
+      return jsonify(data={}, status={"code": 401, "message": "Token is invalid"})
 
     return f(current_user, *args, **kwargs)
   return decorated

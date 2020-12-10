@@ -26,8 +26,9 @@ def login_check(f):
     try:
       data = jwt.decode(token, 'THISISASECRETKEY')
       current_user = models.Users.get(models.Users.id == data['id'])
+      current_user = model_to_dict(current_user)
     except:
-      return jsonify(data={}, status={"code": 401, "message": "Token has expired"})
+      return jsonify(data={}, status={"code": 401, "message": "Token is invalid"})
 
     return f(current_user, *args, **kwargs)
   return decorated
@@ -38,8 +39,7 @@ def login_check(f):
 
 #index
 @rants.route('/', methods=["GET"])
-@login_check
-def get_all_rants(current_user):
+def get_all_rants():
   try:
     rants = [model_to_dict(rant) for rant in models.Rants.select()]
     print(rants)
@@ -49,11 +49,15 @@ def get_all_rants(current_user):
 
 #create
 @rants.route('/', methods=["POST"])
-def create_rant():
+@login_check
+def create_rant(current_user):
   payload = request.get_json()
-  print(payload)
-  new_rant = models.Rants.create(**payload)
+  
+  new_rant = models.Rants.create(title=payload['title'], body=payload['body'], created_by_id=current_user['id'])
   rant_dict = model_to_dict(new_rant)
+  #hide the user who created the posts password
+  del rant_dict['created_by']['password']
+
   return jsonify(data=rant_dict, status={"code": 200, "message": "success"})
 
 #show
@@ -67,7 +71,8 @@ def get_one_rant(id):
 
 #update
 @rants.route('/<id>', methods=["PUT"])
-def update_rant(id):
+@login_check
+def update_rant(current_user, id):
   payload = request.get_json()
   query = models.Rants.update(**payload).where(models.Rants.id == id)
   query.execute()
@@ -75,7 +80,8 @@ def update_rant(id):
 
 #delete
 @rants.route('/<id>', methods=["DELETE"])
-def delete_rant(id):
+@login_check
+def delete_rant(current_user, id):
   rant = models.Rants.get_by_id(id)
   rant_dict = model_to_dict(rant)
   print(rant_dict)
