@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, g
+from flask import Flask, jsonify, g, request
 from flask_cors import CORS
 import os
 
@@ -34,6 +34,12 @@ def after_request(response):
 @app.route('/')
 def index():
   return 'hello'
+
+@app.route('/login')
+def login():
+  auth = request.authorization
+  print(auth)
+  return ""
 
 
 if 'ON_HEROKU' in os.environ:
