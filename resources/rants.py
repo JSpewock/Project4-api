@@ -1,9 +1,35 @@
 import models
 
 from flask import Blueprint, jsonify, request
-from playhouse.shortcuts import model_to_dict 
+from playhouse.shortcuts import model_to_dict
+from functools import wraps
+import jwt
+
+# from app import login_check
 
 rants = Blueprint('rantz', 'rant', url_prefix='rantz')
+
+# token_required = login_check
+
+def login_check(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    token = None
+
+    if 'x-access-token' in request.headers:
+      token = request.headers['x-access-token']
+    
+    if not token:
+      return jsonify(data={}, status={"code": 401, "message" : "Login required"})
+    
+    try:
+      data = jwt.decode(token, 'THISISASECRETKEY')
+      current_user = models.Users.get(models.Users.id == data['id'])
+    except:
+      return jsonify(data={}, status={"code": 401, "message": "Token has expired"})
+
+    return f(current_user, *args, **kwargs)
+  return decorated
 
 # ------------------------------------
 #               Rants
@@ -11,7 +37,8 @@ rants = Blueprint('rantz', 'rant', url_prefix='rantz')
 
 #index
 @rants.route('/', methods=["GET"])
-def get_all_rants():
+@login_check
+def get_all_rants(current_user):
   try:
     rants = [model_to_dict(rant) for rant in models.Rants.select()]
     print(rants)
