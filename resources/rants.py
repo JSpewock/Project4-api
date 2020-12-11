@@ -89,4 +89,12 @@ def delete_rant(current_user, id):
   query.execute()
   return jsonify(data=rant_dict, status={"code": 200, "message": "success, deleted"})
 
+#Show User posts
+@rants.route('/myposts', methods=["GET"])
+@login_check
+def user_posts(current_user):
+  user = models.Users.get_by_id(current_user['id'])
+  posts = [model_to_dict(post) for post in user.rants]
+  return jsonify(data=posts, status={"code": 200, "message": "user posts success"})
+
 
