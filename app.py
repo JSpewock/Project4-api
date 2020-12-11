@@ -44,6 +44,8 @@ app.register_blueprint(comments, url_prefix='/comments')
 CORS(users, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'], supports_credentials=True)
 app.register_blueprint(users, url_prefix='/users')
 
+CORS(app, origins=['http://localhost:3000', 'https://project-4-client-rantz.herokuapp.com'], supports_credentials=True)
+
 @app.before_request
 def before_request():
   """Connect to the database before each request."""
@@ -59,14 +61,9 @@ def after_request(response):
   return response
 
 @app.route('/')
-def index():
-  return 'hello'
-
-@app.route('/login')
-def login():
-  auth = request.authorization
-  print(auth)
-  return ""
+@login_check
+def index(current_user):
+  return jsonify(data={}, status={"code": 200, "message": "session is valid"})
 
 
 if 'ON_HEROKU' in os.environ:
