@@ -85,7 +85,9 @@ def delete_rant(current_user, id):
   rant = models.Rants.get_by_id(id)
   rant_dict = model_to_dict(rant)
   print(rant_dict)
+  query1 = models.Comments.delete().where(models.Comments.parent_post == id)
   query = models.Rants.delete().where(models.Rants.id == id)
+  query1.execute()
   query.execute()
   return jsonify(data=rant_dict, status={"code": 200, "message": "success, deleted"})
 
