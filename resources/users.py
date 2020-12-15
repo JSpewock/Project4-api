@@ -22,8 +22,9 @@ def create_user():
     user = models.Users.create(**payload)
 
     user_dict = model_to_dict(user)
+    token = jwt.encode({'id': user_dict['id'], 'username': user_dict['username'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, 'THISISASECRETKEY')
     del user_dict['password']
-    return jsonify(data=user_dict, status={"code" : 201, "message": "User successfully created"})
+    return jsonify(data={"token": token.decode('UTF-8')}, status={"code" : 201, "message": "User successfully created"})
 
 
 
