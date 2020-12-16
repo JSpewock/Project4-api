@@ -99,4 +99,13 @@ def user_posts(current_user):
   posts = [model_to_dict(post) for post in user.rants]
   return jsonify(data=posts, status={"code": 200, "message": "user posts success"})
 
+#test route
+@rants.route('/testroute/<id>', methods=["GET"])
+def testing(id):
+  testing = models.Rants.select().where(models.Rants.id == id)
+  posts = [model_to_dict(post) for post in testing]
+  print(posts)
+  # posts = [model_to_dict(post) for post in models.Rants.select('id' == 2)]
+  return 'jsonify(data=testing)'
+
 
