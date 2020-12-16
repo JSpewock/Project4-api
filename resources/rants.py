@@ -102,9 +102,17 @@ def user_posts(current_user):
 #test route
 @rants.route('/sort/<topic>', methods=["GET"])
 def testing(topic):
-  testing = models.Rants.select().where(models.Rants.topic == topic)
-  posts = [model_to_dict(post) for post in testing]
-  print(posts)
+  posts = ''
+  if topic == 'recent':
+    posts_query = models.Rants.select().order_by(-models.Rants.created_at).limit(10)
+    posts = [model_to_dict(post) for post in posts_query]
+  elif topic == 'all':
+    posts_query = models.Rants.select()
+    posts = [model_to_dict(post) for post in posts_query]
+  else: 
+    testing = models.Rants.select().where(models.Rants.topic == topic)
+    posts = [model_to_dict(post) for post in testing]
+    print(posts)
   # posts = [model_to_dict(post) for post in models.Rants.select('id' == 2)]
   return jsonify(data=posts, status={"code": 200, "message": "successfully filtered"})
 
