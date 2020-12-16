@@ -41,7 +41,7 @@ def login_check(f):
 @rants.route('/', methods=["GET"])
 def get_all_rants():
   try:
-    rants = [model_to_dict(rant) for rant in models.Rants.select()]
+    rants = [model_to_dict(rant) for rant in models.Rants.select().limit(3)]
     print(rants)
     return jsonify(data=rants, status={"code": 200, "message": "success"})
   except models.DoesNotExist:
@@ -53,7 +53,7 @@ def get_all_rants():
 def create_rant(current_user):
   payload = request.get_json()
   
-  new_rant = models.Rants.create(title=payload['title'], body=payload['body'], created_by=current_user['id'])
+  new_rant = models.Rants.create(title=payload['title'], body=payload['body'], topic=payload['topic'], created_by=current_user['id'])
   rant_dict = model_to_dict(new_rant)
   #hide the user who created the posts password
   del rant_dict['created_by']['password']
@@ -100,12 +100,12 @@ def user_posts(current_user):
   return jsonify(data=posts, status={"code": 200, "message": "user posts success"})
 
 #test route
-@rants.route('/testroute/<id>', methods=["GET"])
-def testing(id):
-  testing = models.Rants.select().where(models.Rants.id == id)
+@rants.route('/sort/<topic>', methods=["GET"])
+def testing(topic):
+  testing = models.Rants.select().where(models.Rants.topic == topic)
   posts = [model_to_dict(post) for post in testing]
   print(posts)
   # posts = [model_to_dict(post) for post in models.Rants.select('id' == 2)]
-  return 'jsonify(data=testing)'
+  return jsonify(data=posts, status={"code": 200, "message": "successfully filtered"})
 
 
