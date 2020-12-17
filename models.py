@@ -21,6 +21,7 @@ class Users(UserMixin, Model):
 class Rants(Model):
   title = CharField()
   body = CharField()
+  topic = CharField()
   created_by = ForeignKeyField(Users, backref='rants')
   created_at = DateTimeField(default=datetime.datetime.now)
 
