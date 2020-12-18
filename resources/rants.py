@@ -12,6 +12,7 @@ rants = Blueprint('rantz', 'rant', url_prefix='rantz')
 # token_required = login_check
 
 #all information on jwt and creating decorators was taken from https://www.youtube.com/watch?v=WxGBoY5iNXY
+#all information about how to sort and query properly comes from the peewee documentation, http://docs.peewee-orm.com/en/latest/peewee/querying.html#bulk-inserts
 def login_check(f):
   @wraps(f)
   def decorated(*args, **kwargs):
@@ -99,7 +100,7 @@ def user_posts(current_user):
   posts = [model_to_dict(post) for post in user.rants]
   return jsonify(data=posts, status={"code": 200, "message": "user posts success"})
 
-#test route
+#sort route
 @rants.route('/sort/<topic>', methods=["GET"])
 def testing(topic):
   posts = ''
